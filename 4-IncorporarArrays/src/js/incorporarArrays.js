@@ -24,7 +24,7 @@ function nuevoPedido(query) {
 
 
 }
-//console.log(ejemplo)
+
 const muzzaExtra = (value, cantPizzas, pedido) => {
     if (value === "s") {
         let muzzEx = muzzaGig + extra
@@ -83,15 +83,12 @@ const datos = pedidos.map(pedido => pedido)
 console.log(datos)
 
 
+let filtrado = pedidos.filter( e => e.total < 5000)
+console.log(filtrado);
 
 
 
 
 
-
-
-
-// console.log("Extra Muzza $120")
-// console.log("Ingrese la cantidad de pizzas que desea llevar")
 
 
