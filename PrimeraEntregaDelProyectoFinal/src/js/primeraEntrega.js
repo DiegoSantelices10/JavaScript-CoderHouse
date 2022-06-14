@@ -5,12 +5,12 @@ let result = 0
 let pedidos = []
 
 
-function nuevoPedido(query) {
+function nuevoPedido() {
     let pedido = {}
-    if (query === "s") {
-        let domicilio = prompt("Ingrese su domicilio de envio por favor")
-        let cantPizzas = prompt("Ingrese la cantidad de pizzas que va llevar")
-        let extraMuzza = prompt("Desea agregar Extra Muzza?  S/N")
+        alert("Bienvenidos Pizzeria Canavaro \n Muzzarella Gigante $960 - Extra muzza $120 \n LLevando mas de 5 pizzas tenes un 10% de descuento \n Aceptamos Tarjetas, 5% de recargo")
+        let domicilio = prompt("Ingrese su domicilio de envio por favor.")
+        let cantPizzas = prompt("¿Cuantas desea llevar?")
+        let extraMuzza = prompt("¿Desea agregar Extra Muzza? (S) o (N)")
         pedido.id = Math.round(Math.random() * (1000 - 0) + 0)
         pedido.domicilio = domicilio
         pedido.cantidadDePizzas = cantPizzas
@@ -18,11 +18,14 @@ function nuevoPedido(query) {
 
         muzzaExtra(extraMuzza, cantPizzas, pedido)
         descuentoPorCantidad(cantPizzas, pedido)
-        return pedido
-    }
 
-
-
+        pedidos.push(pedido)
+        let mensaje2 = prompt("¿Quieres realizar un pedido? (S) o (N)")
+        if (mensaje2 === "s") {
+            nuevoPedido()
+        } else {
+            alert("Gracias! te avisaremos cuando este en camino!")
+        }
 }
 
 const muzzaExtra = (value, cantPizzas, pedido) => {
@@ -43,10 +46,10 @@ const descuentoPorCantidad = (value, pedido) => {
     if (value >= 5) {
 
         result = result - (result / 100) * 10
-        let medioPago = prompt("el total del pedido con descuento es  $" + result + "\n Pago en efectivo(e) o Tarjeta(t) ? \n el pago con tarjeta tiene un recargo del 5%  ")
+        let medioPago = prompt("el total del pedido con descuento es  $" + result + "\n Pago en efectivo(E) o Tarjeta(T) ? \n el pago con tarjeta tiene un recargo del 5%  ")
         mediosDePago(medioPago, pedido)
     } else {
-        medioPago = prompt("el total del pedido es  $" + result + "\n Pago en efectivo(e) o Tarjeta(t) ? \n el pago con tarjeta tiene un recargo del 5%")
+        medioPago = prompt("el total del pedido es  $" + result + "\n Pago en efectivo(E) o Tarjeta(T) ? \n el pago con tarjeta tiene un recargo del 5%")
         mediosDePago(medioPago, pedido)
     }
 }
@@ -71,18 +74,20 @@ const mediosDePago = (value, pedido) => {
 
 }
 
-let query = prompt("Quieres realizar un pedido ?")
-let pedidoNuevo = nuevoPedido(query)
-pedidos.push(pedidoNuevo)
-query = prompt("Quieres realizar un pedido ?")
-pedidoNuevo = nuevoPedido(query)
-pedidos.push(pedidoNuevo)
 
 
+nuevoPedido()
+let busqueda = prompt("Realizar una busqueda por el precio")
+let bus = pedidos.find(e => e.total == busqueda)
+
+console.log("Busqueda por precio")
+console.log(bus)
+
+console.log("Pedidos generados")
 const datos = pedidos.map(pedido => pedido)
 console.log(datos)
 
-
+console.log("Pedidos Filtrados")
 let filtrado = pedidos.filter( e => e.total < 5000)
 console.log(filtrado);
 
