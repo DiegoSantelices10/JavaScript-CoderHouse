@@ -1,30 +1,49 @@
-// Agregar array al proyecto
 const muzzaGig = 1200
 const extra = 200
 let result = 0
 let pedidos = []
 
+
+// obtenemos del HTML los datos del formulario con el ID = formulario
 const formulario = document.querySelector('#formulario')
+
+// obtenemos del HTML el nodo que es un DIV con el id cards-pedidos
 const cardPedido = document.getElementById('cards-pedidos')
+
+// a cardPedido le asignamos una clase con los valores correspondientes
 cardPedido.className = "row p-2"
 
+// Metodo cuando comienza el proyecto
 function nuevoPedido(e) {
+    // es un evento que ayuda a que no se refresque la pagina cuando apretas el boton de enviar
     e.preventDefault()
+
+
     let pedido = {}
+    // guardamos en variables los datos que obtenemos del formmulario
     let domicilio = formulario.domicilio.value
     let cantPizzas = formulario.cantidad.value
     let extraMuzza = formulario.extra.value
+
+    // Almacenamos los datos en el objeto pedido{}
     pedido.id = Math.round(Math.random() * (1000 - 0) + 0)
     pedido.domicilio = domicilio
     pedido.cantidadDePizzas = cantPizzas
 
+
+    //Ejecutamos las funciones creadas abajo
     muzzaExtra(extraMuzza, cantPizzas, pedido)
     descuentoPorCantidad(cantPizzas, pedido)
+    
+    //Guardamos el objeto pedido en el array Pedidos
     pedidos.push(pedido)
+
+    // Me limpia el formulario luego de apretar en boton de enviar con el .reset()
     document.getElementById("formulario").reset();
 
 }
 
+//metodo de muzzarella Extra
 const muzzaExtra = (value, cantPizzas, pedido) => {
     if (value === "s") {
         let muzzEx = muzzaGig + extra
@@ -38,7 +57,7 @@ const muzzaExtra = (value, cantPizzas, pedido) => {
     }
 }
 
-
+// Metodo Descuento por Cantidad
 const descuentoPorCantidad = (value, pedido) => {
     if (value >= 5) {
 
@@ -51,7 +70,7 @@ const descuentoPorCantidad = (value, pedido) => {
     }
 }
 
-
+// Metodo Medio De Pago
 const mediosDePago = (value, pedido) => {
 
     if (value === "t") {
@@ -71,12 +90,17 @@ const mediosDePago = (value, pedido) => {
 
 }
 
+
+// Es un evento que se ejecuta cuando el usuario apreta el boton SUBMIT del formulario, donde ejecuta una funcion
+//que en este caso es nuevoPedido, que es la función que tenemos arriba
 formulario.addEventListener('submit', nuevoPedido)
 
+
+//visualizar todos los objetos que tenemos guardados en el Arrays Principal
+// Se ejecuta cuando el usuario apreta el boton que tiene el evento onClick=mostrarPedido() que es la funcion que seleccionamos
 const mostrarPedidos = () => {
 
     if (!pedidos.length) {
-        console.log("sinpedidos");
         const contenedor = document.createElement("div")
         contenedor.className = "container"
         contenedor.innerHTML = '<p>sin pedidos</p>'
@@ -91,7 +115,7 @@ const mostrarPedidos = () => {
         <div class="card-body">
         <p class="card-text">${pedido.cantidadDePizzas} Muzzarella Gigantes</p>
         <p class="card-text">Extra muzza: ${pedido.extraMuzza} </p>
-        <h5>Total: $ ${pedido.total}</h5>
+        <h5 >Total: $ ${pedido.total}</h5>
         </div>
         </div>
         `
