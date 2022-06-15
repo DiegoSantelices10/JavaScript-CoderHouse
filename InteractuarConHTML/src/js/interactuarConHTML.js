@@ -99,16 +99,18 @@ formulario.addEventListener('submit', nuevoPedido)
 //visualizar todos los objetos que tenemos guardados en el Arrays Principal
 // Se ejecuta cuando el usuario apreta el boton que tiene el evento onClick=mostrarPedido() que es la funcion que seleccionamos
 const mostrarPedidos = () => {
-
     if (!pedidos.length) {
-        const contenedor = document.createElement("div")
-        contenedor.className = "container"
-        contenedor.innerHTML = '<p>sin pedidos</p>'
-        document.body.appendChild(contenedor)
-    } else {
-        pedidos.map(pedido => {
             const contenedor = document.createElement("div")
-            contenedor.className = "col-4"
+            contenedor.className = "container"
+            contenedor.id = "pedidos-cards"
+            contenedor.innerHTML = '<p>sin pedidos</p>'
+            cardPedido.appendChild(contenedor)
+    } else {
+
+        pedidos.map(pedido => {
+          const contenedor = document.createElement("div")
+            contenedor.className = "col-4 container"
+            contenedor.id = "pedidos-cards"
             contenedor.innerHTML = `
         <div class="card text-white bg-primary mb-3 container"  style="max-width: 18rem;">${pedido.id}
         <div class="">Domicilio: ${pedido.domicilio}</div>
@@ -121,11 +123,16 @@ const mostrarPedidos = () => {
         `
             cardPedido.appendChild(contenedor)
         })
-
     }
 }
 
 
+const ocultar = () => {
+    let element = document.getElementById("cards-pedidos");
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
+}
 
 
 // const datos = pedidos.map(pedido => pedido)
