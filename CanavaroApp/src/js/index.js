@@ -21,7 +21,7 @@ function nuevoPedido(e) {
 
     let pedido = {}
     // guardamos en variables los datos que obtenemos del formmulario
-    let domicilio = formulario.domicilio.value
+    let domicilio = formulario.apellido.value
     let cantPizzas = formulario.cantidad.value
     let extraMuzza = formulario.extra.value
 
@@ -112,15 +112,15 @@ const mostrarPedidos = () => {
             contenedor.className = "col-4 container"
             contenedor.id = "pedidos-cards"
             contenedor.innerHTML = `
-        <div class="card text-white bg-primary mb-3 container"  style="max-width: 18rem;">${pedido.id}
-        <div class="">Domicilio: ${pedido.domicilio}</div>
-        <div class="card-body">
-        <p class="card-text">${pedido.cantidadDePizzas} Muzzarella Gigantes</p>
-        <p class="card-text">Extra muzza: ${pedido.extraMuzza} </p>
-        <h5 >Total: $ ${pedido.total}</h5>
-        </div>
-        </div>
-        `
+                            <div class="card text-white bg-primary mb-3 container"  style="max-width: 18rem;">${pedido.id}
+                            <div class="">Domicilio: ${pedido.domicilio}</div>
+                            <div class="card-body">
+                            <p class="card-text">${pedido.cantidadDePizzas} Muzzarella Gigantes</p>
+                            <p class="card-text">Extra muzza: ${pedido.extraMuzza} </p>
+                            <h5 >Total: $ ${pedido.total}</h5>
+                            </div>
+                            </div>
+                            `
             cardPedido.appendChild(contenedor)
         })
     }
