@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+
+    <div class="m-auto container p-4">
+        <button type="button" onclick="mostrarPedidos()" class="btn btn-danger">
+          mostrar pedidos
+        </button>
+        <button type="button" onclick="ocultar()" class="btn btn-danger">
+          ocultar
+        </button>
+      </div>
+  
+      < id="cards-pedidos">
+        <form id="formulario" method="post" action="">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label"
+              >Ingresa tu domicilio</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="apellido"
+              aria-describedby="emailHelp"
+            />
+          </div>
+  
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label"
+              >¿Cuantas Pizzas vas a llevar?</label
+            >
+            <input type="text" class="form-control" name="cantidad" />
+          </div>
+  
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label"
+              >¿Deseas agregar extra de Muzzarella? (S) o (N)</label
+            >
+            <input type="text" class="form-control" name="extra" />
+          </div>
+  
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label"
+              >¿Tarjeta (T) o Efectivo (E)?</label
+            >
+            <input type="text" class="form-control" name="medioPago" />
+          </div>
+  
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      
+  
+</body>
+</html>

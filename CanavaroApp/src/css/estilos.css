@@ -6,3 +6,18 @@ body {
 .caja {
     height: 80%;
 }
+
+.img-pizza {
+    width: 15%;
+}
+
+.pedido {
+    width: 40%;
+    top: 8%;
+    left: 50%;
+    position: fixed;
+}
+
+p {
+    font-size: 15px;
+}
