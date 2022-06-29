@@ -14,20 +14,66 @@
     <link rel="stylesheet" href="css/estilos.css" />
   </head>
 
-  <body>
-    <div class="container text-center">
-      <h2>PIZZERIA CAVANARO</h2>
+  <body >
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Tu Pedido</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-borderless">
+          <tbody class="tableModal">
+          
+          </tbody>
+          <tfoot class="totalModal">
+         
+          </tfoot>
+         </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmarPedido">Confirmar Pedido</button>
+      </div>
     </div>
+  </div>
+</div>
 
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-white shadow">
+  <img src="/CanavaroApp/src/img/logocanavaro.png" class="rounded mx-auto d-bloc logo" alt="...">
+  <a href="/CanavaroApp/src/pedidos.html" class="link-pedidos">Ver Pedidos</a>
+</nav>
+  
+    
     <div class="caja container mx-auto row">
       <div class="w-50 col-6" id="pizzas">
-        <h4>NUESTRAS PIZZAS</h4>
+        <h4 >NUESTRAS PIZZAS</h4>
       </div>
 
       <div class="col-6">
         <div class="pedido">
           <h4>TU PEDIDO</h4>
-          <table class="table table-borderless"></table>
+          
+           <table class="table table-borderless">
+            <tbody class="tableCarrito">
+            
+            </tbody>
+            <tfoot class="tableTotales">
+           
+            </tfoot>
+           </table>
+
+
+
+           
+           <button type="button" class="btn btn-primary" id="buttonPedido" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+           Realizar Pedido
+          </button>
+       
+          
+          
         </div>
       </div>
     </div>

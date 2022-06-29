@@ -1,7 +1,33 @@
-let pedidos = [];
+let pedidos = []
 let carrito = {}
-const cardPizza = document.getElementById("pizzas");
-const carritoAdd = document.querySelector("table")
+const btnPedido = document.getElementById("buttonPedido")
+const btnConfirmar = document.getElementById("confirmarPedido")
+const cardPizza = document.getElementById("pizzas")
+const tbody = document.querySelector(".tableCarrito")
+const tfoot = document.querySelector(".tableTotales")
+
+const tableModal = document.querySelector(".tableModal")
+const totalModal = document.querySelector(".totalModal")
+
+
+tbody.addEventListener("click", (e) => btnSumarRestar(e) )
+
+btnConfirmar.addEventListener("click", (e) => {
+    e.preventDefault()
+    pedidos.push(carrito)
+  localStorage.setItem('pedidos', JSON.stringify(pedidos))
+  tbody.innerHTML = "" 
+  tfoot.innerHTML = ""
+  carrito = {}
+  btnPedido.style.visibility = "hidden"
+  //  window.location.href = "../src/index.html";
+})
+
+
+
+
+btnPedido.style.visibility = "hidden"
+
 
 let pizzas = [
     {
@@ -88,7 +114,7 @@ let pizzas = [
 
 pizzas.map((pizza) => {
     const contenedor = document.createElement("div");
-    contenedor.className = "shadow-sm p-2 mb-3 bg-white rounded d-flex justify-content-between align-items-center contenido"
+    contenedor.className = "shadow-sm p-2 mb-3 bg-white rounded-3 d-flex justify-content-between align-items-center contenido"
     contenedor.innerHTML = `
                                 <img
                                     key="${pizza.id}"
@@ -97,13 +123,15 @@ pizzas.map((pizza) => {
                                     alt="${pizza.nombre}"
                                 />
                                 <div class="p-2  w-100">
-                                    <h5 class="m-0">${pizza.nombre}</h4>
-                                    <h6 class="m-0 ">${pizza.descripcion}</h6>
-                                    <p class="m-0 fw-bold">${pizza.precio}</p>
+                                    <h5 class="m-0 fw-bold text-uppercase">${pizza.nombre}</h5>
+                                    <h6 class="m-0 fst-normal">${pizza.descripcion}</h6>
+                                    <p class="m-0 fw-bold">$<span>${pizza.precio}</span></p>
                                 </div>
-                            <div>
-                            <a name="agregar" id="${pizza.id}"  class="btn btn-outline-light text-primary p-3 shadow-sm fw-bold rounded-pill" href="#" role="button">Agregar</a>
-                            </div> `;
+                                <div>
+                                    <button name="agregar" id="${pizza.id}"  
+                                            class="mx-1 shadow-sm fw-bold text-dark fs-4 rounded px-1 border-0 bg-white" 
+                                            type="button">+</button>
+                                            </div> `;
              cardPizza.appendChild(contenedor);
              document.getElementById(`${pizza.id}`).addEventListener("click", () => {addCarrito(contenedor)} )
 })
@@ -113,38 +141,111 @@ const addCarrito = items => {
     if(items) setCarrito(items)
 }
 
+
+
 const setCarrito = item => {
-    const producto = {
+   let producto = {
+        id: item.querySelector('button').id,
         nombre: item.querySelector('h5').textContent,
-        precio: item.querySelector('p').textContent,
-        id: item.querySelector('a').id,
+        precio: item.querySelector('span').textContent,
         cantidad: 1
     }
-    //console.log(producto);
+
     if(carrito.hasOwnProperty(producto.id)) {
         producto.cantidad = carrito[producto.id].cantidad + 1
     }
-     carrito[producto.id] = {...producto}
+     carrito[producto.id] = {
+        nombre : producto.nombre,
+        precio : producto.precio,
+        cantidad : producto.cantidad
+     }
 
         pintarCarrito()
     }
 
     const pintarCarrito = () => {
-        carritoAdd.innerHTML = ""
+        tbody.innerHTML = ""
         Object.values(carrito).map(producto => {
-            const contenedor = document.createElement("tbody");
-            contenedor.innerHTML = `<tr>
-                                        <th scope="row">${producto.id}</th>
+            const contenedor = document.createElement("tr");
+                contenedor.accessKey= `${producto.id}` 
+            contenedor.innerHTML = `
                                         <td>${producto.nombre}</td>
                                         <td>${producto.cantidad}</td>
                                         <td>
-                                        <button name="muzamin"  class="mx-1 shadow-sm fw-bold text-danger rounded px-1 border-0 bg-white" type="button" >-</button>
-                                        <button name="muzamax"  class="shadow-sm text-primary fw-bold rounded px-1 border-0 bg-white" type="button" >+</button>
+                                        <button    class="mx-1 shadow-sm fw-bold text-danger rounded px-1 border-0 bg-white" type="button" >-</button>
+                                        <button   class="shadow-sm text-primary fw-bold rounded px-1 border-0 bg-white" type="button" >+</button>
                                         </td>
                                         <td>$ ${producto.precio * producto.cantidad}</td>
-                                    </tr>
+                                    
                                      `
-            carritoAdd.appendChild(contenedor)
+            tbody.appendChild(contenedor)   
         })
+                totales()
+
     }
+
+    const btnSumarRestar = (e) => {
+        tbody.innerHTML= ""
+        if (e.target.classList.contains('text-primary')) {
+            const producto = carrito[e.path[2].accessKey]
+                producto.cantidad = producto.cantidad + 1
+                carrito[e.path[2].accessKey] = {...producto}
+                pintarCarrito()
+        }
+        if (e.target.classList.contains('text-danger')) {
+            const producto = carrito[e.path[2].accessKey]
+            producto.cantidad = producto.cantidad - 1
+            if (producto.cantidad === 0) {
+                delete carrito[e.path[2].accessKey]
+            } else {
+                carrito[e.path[2].accessKey] = {...producto}
+            }
+            pintarCarrito()
+        }
+      
+    }
+    
+    const totales = () => {
+        tfoot.innerHTML = ""
+        const cantidadTotal = Object.values(carrito).reduce((acc, carrito ) => acc + carrito.cantidad, 0)
+        const precioTotal =   Object.values(carrito).reduce((acc, {cantidad, precio}) => acc + cantidad * precio ,0)
+        const contenedor = document.createElement("tr")
+        contenedor.innerHTML =  `   
+                                <th>TOTALES</th>
+                                <th>${cantidadTotal}</th>
+                                <th></th>
+                                <th>$ ${precioTotal}</th>
+                                 `
+            tfoot.appendChild(contenedor)
+            btnPedido.style.visibility = "visible"
+    }
+
+
+    btnPedido.addEventListener("click", () => {
+        tableModal.innerHTML = ""
+        Object.values(carrito).forEach(producto => {
+                  const contenedor = document.createElement("tr");
+                        contenedor.innerHTML = `
+                                        <td>${producto.nombre}</td>
+                                        <td>${producto.cantidad}</td>
+                                        <td></td>
+                                        <td>$ ${producto.precio * producto.cantidad}</td>
+                                    
+                                     `    
+            tableModal.appendChild(contenedor)
+         })
+         totalModal.innerHTML = ""
+         const cantidadTotal = Object.values(carrito).reduce((acc, carrito ) => acc + carrito.cantidad, 0)
+         const precioTotal =   Object.values(carrito).reduce((acc, {cantidad, precio}) => acc + cantidad * precio ,0)
+         carrito.total = precioTotal
+         const tr = document.createElement("tr")
+                         tr.innerHTML =  `   
+                                 <th>TOTAL</th>
+                                 <th>${cantidadTotal}</th>
+                                 <th></th>
+                                 <th>$ ${precioTotal}</th>
+                                  `
+             totalModal.appendChild(tr)
+        
+    })
 
