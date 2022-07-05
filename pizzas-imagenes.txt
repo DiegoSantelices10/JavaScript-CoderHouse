@@ -1,5 +1,0 @@
-https://live.staticflickr.com/65535/49084210211_f3e458f01a_m.jpg = Pizza muzarella Gigante
-https://live.staticflickr.com/65535/49084418617_4409f4484d_m.jpg = Jamon y Morrones
-https://live.staticflickr.com/65535/49084418322_0b46e97696_m.jpg = Napo con Jamon
-https://live.staticflickr.com/65535/49084210136_3d3cde77b7_m.jpg = Panceta
-https://live.staticflickr.com/65535/49084418357_397e7e5ab5_m.jpg = Caprese
