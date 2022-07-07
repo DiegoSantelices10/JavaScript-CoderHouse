@@ -9,9 +9,11 @@ const totalModal = document.querySelector(".totalModal")
 const seguirComprando = document.getElementById('seguirComprando')
 const inputDireccion = document.getElementById('inputDireccion')
 let pedidos = []
-let carrito = {
-}
+let carrito = {}
 let producto = {}
+let pizzas = {}
+
+
 
 // Ocultamos el botton hasta que el usuario seleccione un producto
 btnPedido.style.visibility = "hidden"
@@ -19,11 +21,14 @@ btnPedido.style.visibility = "hidden"
 // Generamos un Evento donde se ejecuta la funcion btnSumarRestar()
 tbody.addEventListener("click", (e) => btnSumarRestar(e) )
 
+seguirComprando.addEventListener('click', () => {
 
+    console.log(carrito);
+})
 
 
 // Array de los productos
-let pizzas = 
+let pizzasArray = 
 [
     {
         id: 1,
@@ -108,7 +113,7 @@ let pizzas =
 ];
 
 // Iteramos el array de pizzas y lo mostramos en el DOM
-pizzas.map(({id, imagen, nombre, descripcion, precio}) => {
+pizzasArray.map(({id, imagen, nombre, descripcion, precio}) => {
     const contenedor = document.createElement("div");
     contenedor.className = "shadow-sm p-2 mb-3 bg-white rounded-3 d-flex justify-content-between align-items-center contenido"
     contenedor.innerHTML = ` <img key="${id}" src="${imagen}" class="img-pizza" alt="${nombre}"/>
@@ -136,17 +141,15 @@ const addCarrito = items => {
 // Si existe le agregamos una unidad al producto.cantidad 
 // Caso contrario pintamos el carrito con los datos del objeto producto
 if(carrito.hasOwnProperty(producto.id)) {
-    
     producto.cantidad += carrito[producto.id].cantidad
 }
- carrito[producto.id] = {...producto}
-        pintarCarrito()
+     carrito[producto.id] = {...producto}
+ pintarCarrito()
 }
 
 // Ya con los productos seleccionados iteramos el carrito para pintarlo en el DOM
 const pintarCarrito = () => {
     tbody.innerHTML = ""
-  
     Object.values(carrito).map(({id, nombre, cantidad, precio}) => {
 const contenedor = document.createElement("tr");
       contenedor.accessKey= `${id}` 
@@ -156,7 +159,7 @@ const contenedor = document.createElement("tr");
                                   <button accessKey="${id}" class="mx-1 shadow-sm fw-bold text-danger rounded px-1 border-0 bg-white" type="button" >-</button>
                                   <button accessKey="${id}" class="shadow-sm text-primary fw-bold rounded px-1 border-0 bg-white" type="button" >+</button>
                                </td>
-                               <td>${precio * cantidad}</td>`
+                               <td>$ ${precio * cantidad}</td>`
             tbody.appendChild(contenedor)   
         })
         totales()
@@ -168,12 +171,11 @@ const totales = () => {
     tfoot.innerHTML = ""
  let cantidadTotal = Object.values(carrito).reduce((acc, carrito ) => acc + carrito.cantidad, 0)
    let precioTotal = Object.values(carrito).reduce((acc, {cantidad, precio}) => acc + cantidad * precio, 0)
-
-const contenedor = document.createElement("tr")
+    const contenedor = document.createElement("tr")
       contenedor.innerHTML =  ` <th>TOTALES</th>
                                 <th>${cantidadTotal}</th>
                                 <th></th>
-                                <th>${precioTotal}</th>`
+                                <th>$ ${precioTotal}</th>`
             tfoot.appendChild(contenedor)
             btnPedido.style.visibility = "visible"
     }
@@ -207,17 +209,16 @@ btnPedido.addEventListener("click", () => {
           contenedor.innerHTML = ` <td>${nombre}</td>
                                    <td>${cantidad}</td>
                                    <td></td>
-                                   <td>${precio * cantidad}</td> `    
+                                   <td>$ ${precio * cantidad}</td> `    
           tableModal.appendChild(contenedor)})
           
         let  cantidadTotal = Object.values(carrito).reduce((acc, {cantidad} ) => acc + cantidad, 0)
         let  precioTotal =   Object.values(carrito).reduce((acc, {cantidad, precio}) => acc + cantidad * precio ,0)
-          carrito.total = precioTotal
-    const tr = document.createElement("tr")
+        const tr = document.createElement("tr")
           tr.innerHTML =  `<th>TOTAL</th>
                            <th>${cantidadTotal}</th>
                            <th></th>
-                           <th>${precioTotal}</th>`
+                           <th>$ ${precioTotal}</th>`
             totalModal.appendChild(tr)
         })
 
@@ -227,8 +228,16 @@ btnPedido.addEventListener("click", () => {
 btnConfirmar.addEventListener("click", (e) => {
       e.preventDefault()
       carrito.direccion = inputDireccion.value
+      let  precioTotal =   Object.values(carrito).reduce((acc, {cantidad, precio}) => acc + cantidad * precio ,0)
+      carrito.total = precioTotal
       pedidos.push(carrito)
       localStorage.setItem('pedidos', JSON.stringify(pedidos))
+      Swal.fire({
+        icon: 'success',
+        title: 'Pedido Confirmado',
+        text: 'Te avisaremos cuando tu pedido este en camino!',
+        timer: 3500
+      })
       tbody.innerHTML = "" 
       tfoot.innerHTML = ""
       inputDireccion.value = ""
