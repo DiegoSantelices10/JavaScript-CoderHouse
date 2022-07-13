@@ -5,9 +5,12 @@ body {
 
 
 .caja {
-    margin-top: 2%;
+    margin-top: 3%;
 }
 
+.caja2 {
+    margin-top: 10%;
+}
 .img-pizza {
     width: 15%;
 }
