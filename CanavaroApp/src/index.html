@@ -25,10 +25,7 @@
           <table class="table table-borderless">
             <tbody class="tableModal"></tbody>
             <tfoot class="totalModal"></tfoot>
-            <div class="py-3">
-              <input type="text" class="form-control" id="inputDireccion" placeholder="Ingrese su direccion..."
-                aria-label="Default" aria-describedby="inputGroup-sizing-default" />
-            </div>
+            
           </table>
         </div>
         <div class="modal-footer">
@@ -45,50 +42,22 @@
   </div>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
-  <!-- Container wrapper -->
-  <div class="container">
-    <!-- Navbar brand -->
-      <img
-        src="/CanavaroApp/src/img/logocanavaro.png"
-        height="100"
-        alt="MDB Logo"
-        loading="lazy"
-      />
-      <div class="d-flex align-items-center">
-        <a
-          class="btn btn-dark px-3 rounded-pill "
-          href="/CanavaroApp/src/pedidos.html"
-          role="button"
-          >Ver pedidos</a>
-      </div>
+<nav class="navbar fixed-top shadow-sm navbar-expand-md navbar-light bg-light p-0">
+  
+  <div class="container px-5">
+      <img src="/CanavaroApp/src/img/logocanavaro.png" height="85" alt="Logo" loading="lazy"/>
+      <button id="buttonPedido"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="border-0 m-0 p-0 bg-light" title="carrito">
+        <img src="./img/shopping-cart_icon-icons.com_72552.png" alt="carrito" width="40" class="bg-light">
+        <span id="contadorCarrito" class="bg-light p-3"></span>
+      </button> 
   </div>
 </nav>
 
-
-
-
-  <div class="caja container mx-auto row">
-    <div class="w-50 col-6" id="pizzas">
-      <h4>NUESTRAS PIZZAS</h4>
+<div class="caja">
+    <div class="cards-container" id="pizzas">
     </div>
+</div>
 
-    <div class="col-6">
-      <div class="pedido">
-        <h4>TU PEDIDO</h4>
-
-        <table class="table table-borderless">
-          <tbody class="tableCarrito"></tbody>
-          <tfoot class="tableTotales"></tfoot>
-        </table>
-
-        <button type="button" class="btn btn-primary" id="buttonPedido" data-bs-toggle="modal"
-          data-bs-target="#staticBackdrop">
-          Realizar Pedido
-        </button>
-      </div>
-    </div>
-  </div>
   <script type="text/javascript" src="js/index.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

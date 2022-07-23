@@ -1,19 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+
+
 body {
     height: 100%;
-    background-color: #F0F0F0;
+    background-color: #F5F5F5;
+    font-family: 'Rubik', sans-serif;
 }
 
 
 .caja {
-    margin-top: 3%;
+    margin-top: 10%;
 }
+
+.cards-container {
+    display: grid;
+    grid-template-columns:
+    repeat(auto-fit, minmax(350px, 1fr));
+    gap:15px;
+}
+
+
+.img-pizza {
+    width: 90px;
+    height: 90px;
+}
+  
+  
 
 .caja2 {
     margin-top: 10%;
 }
-.img-pizza {
-    width: 15%;
-}
+
 
 .pedido {
     width: 35%;
@@ -47,16 +64,36 @@ a{
     padding: 30px
 }
 
+.titulo {
+    font-weight: 700;
+}
+.descripcion {
+    font-weight: 400;
+    font-size: 12px;
+    height: 30px;
 
+}
+
+.precio {
+    font-size: 17px;
+}
 
 .button-sumar {
     border:none;
-    
-   
-
 }
 
 .button-sumar:hover {
     color: white;
     background-color: black;
+}
+
+#buttonPedido {
+width: 85px;
+height: 85px;
+}
+
+@media only screen and (max-width: 768px) {
+    .caja {
+        padding: 0px;
+    }
 }
