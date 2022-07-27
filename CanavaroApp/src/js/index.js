@@ -8,44 +8,64 @@ window.location.href = "./login.html"
 // declaracion de variables donde obtenemos nodos del DOM
 const btnPedido = document.getElementById("buttonPedido")
 const btnConfirmar = document.getElementById("confirmarPedido")
-const cardPizza = document.getElementById("pizzas")
+const cardPizza = document.getElementById("cardsPizzas")
 const tableModal = document.querySelector(".tableModal")
 const totalModal = document.querySelector(".totalModal")
 const seguirComprando = document.getElementById('seguirComprando')
 const contadorCarrito = document.getElementById('contadorCarrito')
+const selectProducto = document.getElementById('selectProducto')
+const pizzas = document.getElementById("pizzas")
+const empanadas = document.getElementById("empanadas")
 let pedidos = []
 let pedido = {}
-let pizzas = []
+let productos = []
+
+selectProducto.addEventListener('click', (e) => { 
+    e.preventDefault()
+    if(pizzas.id == e.target.id){
+       pizzas.className= "active" 
+       empanadas.className= ""
+    } else if (empanadas.id == e.target.id) {
+        empanadas.className= "active"
+        pizzas.className= ""
+    }
+    
+    obtenerProductos(e.target.id) 
+})
 
 
 
 // Obtenemos los datos de un archivo JSON local y lo mostramos en el DOM
-const obtenerProductos = async () => {
+const obtenerProductos = async (dato) => {
     await fetch('../src/datosJSON/datos.json')
     .then(res => res.json())
-    .then(datos => datos.map(({ id, imagen, nombre, descripcion, precio }) => {
-            const contenedor = document.createElement("div");
-            contenedor.className = "grid-item bg-white p-2 rounded"
-            contenedor.innerHTML = ` <div class="rounded-3 d-flex justify-content-between cards">
-            <img key="${id}" src="${imagen}" class="img-pizza rounded" alt="${nombre}"/>
-                                        <div class="w-100" style="padding-left: 10px;">
-                                            <h5 class="m-0 titulo text-uppercase">${nombre}</h5>
-                                            <h6 class="descripcion">${descripcion}</h6>
-                                            <p class="m-0 fw-bold precio" >$<span>${precio}</span></p>
-                                        </div>
-                                        <div>
-                                            <button name="agregar" id="${id}"  
-                                                    class="mx-1 shadow-sm fw-bold text-dark fs-4 rounded px-1 border-0 bg-white" 
-                                                    type="button">+
-                                            </button>
-                                        </div>
+    .then(datos => cardProducto(datos[dato]))}
+
+
+    const cardProducto = (dato) => {
+        cardPizza.innerHTML = ""
+        Object.values(dato).map(({id, nombre, imagen, descripcion, precio}) => {
+        const contenedor = document.createElement("div");
+        contenedor.className = "grid-item bg-white p-2 rounded"
+        contenedor.innerHTML = ` <div class="rounded-3 d-flex justify-content-between cards">
+        <img key="${id}" src="${imagen}" class="img-pizza rounded" alt="${nombre}"/>
+                                    <div class="w-100" style="padding-left: 10px;">
+                                        <h5 class="m-0 titulo text-uppercase">${nombre}</h5>
+                                        <h6 class="descripcion">${descripcion}</h6>
+                                        <p class="m-0 fw-bold precio" >$<span>${precio}</span></p>
                                     </div>
-                                    `;
-            cardPizza.appendChild(contenedor);
-            document.getElementById(`${id}`).addEventListener("click", () => { addCarrito(contenedor) })
-        })
-        )}
-obtenerProductos()
+                                    <div>
+                                        <button name="agregar" id="${id}"  
+                                                class="mx-1 shadow-sm fw-bold text-dark fs-4 rounded px-1 border-0 bg-white" 
+                                                type="button">+
+                                        </button>
+                                    </div>
+                                </div>
+                                `;
+        cardPizza.appendChild(contenedor);
+        document.getElementById(`${id}`).addEventListener("click", () => { addCarrito(contenedor) })})
+        
+    }
 
 // Al seleccionar una pizza agregamos los datos en un objeto PRODUCTO
 const addCarrito = items => {
@@ -56,21 +76,21 @@ let producto = {}
         producto.cantidad = 1
 
 
-let result = pizzas.find( element => element.id === producto.id)
+let result = productos.find( element => element.id === producto.id)
 
-!result? pizzas.push(producto) : result.cantidad++
+!result? productos.push(producto) : result.cantidad++
     cantidadCarrito()
 }
 // Actualizamos el valor de la cantidad carrito
 const cantidadCarrito = () => {
-    contadorCarrito.innerText =  Object.values(pizzas).reduce((acc, { cantidad }) => acc + cantidad, 0)
+    contadorCarrito.innerText =  Object.values(productos).reduce((acc, { cantidad }) => acc + cantidad, 0)
 }
 
 // Mostramos los productos agregados en el modal
 const pintarModal = () => {
     tableModal.innerHTML = ""
     totalModal.innerHTML = ""
-    Object.values(pizzas).forEach(({ nombre, cantidad, precio, id }) => {
+    Object.values(productos).forEach(({ nombre, cantidad, precio, id }) => {
         const contenedor = document.createElement("tr");
         contenedor.innerHTML = ` <td>${nombre}</td>
                                    <td>${cantidad}</td>
@@ -82,9 +102,9 @@ const pintarModal = () => {
         tableModal.appendChild(contenedor)
     })
 
-    let cantidadTotal = Object.values(pizzas).reduce((acc, { cantidad }) => acc + cantidad, 0)
-    let precioTotal = Object.values(pizzas).reduce((acc, { cantidad, precio }) => acc + cantidad * precio, 0)
-    console.log(pizzas);
+    let cantidadTotal = Object.values(productos).reduce((acc, { cantidad }) => acc + cantidad, 0)
+    let precioTotal = Object.values(productos).reduce((acc, { cantidad, precio }) => acc + cantidad * precio, 0)
+    console.log(productos);
     const tr = document.createElement("tr")
           tr.innerHTML = `<th>TOTAL</th>
                            <th>${cantidadTotal}</th>
@@ -96,12 +116,12 @@ const pintarModal = () => {
 // Aca se desarrolla la logica de los botones de sumar o restar cantidades de los productos
 const btnSumarRestar = (e) => {
     if (e.target.classList.contains('text-primary')) {
-        let result = pizzas.find( element => element.id === e.target.accessKey)
+        let result = productos.find( element => element.id === e.target.accessKey)
          result.cantidad++
         pintarModal()
     }
     if (e.target.classList.contains('text-danger')) {
-        let result = pizzas.find( element => element.id === e.target.accessKey)
+        let result = productos.find( element => element.id === e.target.accessKey)
         result.cantidad--
         pintarModal()
     
@@ -121,8 +141,8 @@ tableModal.addEventListener("click", (e) => btnSumarRestar(e))
 // Para luego almacenar la informacion en el localStorage
 btnConfirmar.addEventListener("click", (e) => {
     e.preventDefault()
-    let precioTotal = Object.values(pizzas).reduce((acc, { cantidad, precio }) => acc + cantidad * precio, 0)
-    pedido.productos = {...pizzas}
+    let precioTotal = Object.values(productos).reduce((acc, { cantidad, precio }) => acc + cantidad * precio, 0)
+    pedido.productos = {...productos}
     pedido.nombre = datosUser.nombre
     pedido.direccion = datosUser.direccion
     pedido.telefono = datosUser.telefono
@@ -130,7 +150,7 @@ btnConfirmar.addEventListener("click", (e) => {
     pedidos.push(pedido)
     localStorage.setItem('pedidos', JSON.stringify(pedidos))
  window.location.href = "./pedido.html"
-    pizzas = []
+    productos = []
     pedido = {}
 })
 

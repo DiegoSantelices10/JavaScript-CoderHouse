@@ -7,9 +7,30 @@ body {
     font-family: 'Rubik', sans-serif;
 }
 
+.button-group{
+margin-top: 6%;
+padding: 30px;
+}
+
+
+.button-group > button {
+width: 120px;
+border-radius: 30px;
+border: solid 1px #E8E8E8;
+background: #FFFFFF;
+}
+
+.button-group > button:active {
+   
+    background: black;
+    }
+    
 
 .caja {
-    margin-top: 10%;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0px 20px;
 }
 
 .cards-container {
@@ -29,6 +50,7 @@ body {
 
 .caja2 {
     margin-top: 10%;
+    
 }
 
 
@@ -88,7 +110,7 @@ a{
 }
 
 #buttonPedido {
-width: 85px;
+width: 100px;
 height: 85px;
 }
 
