@@ -33,8 +33,8 @@
           <button type="button" class="btn btn-success" id="seguirComprando" data-bs-dismiss="modal">
             Seguir Comprando
           </button>
-          <button type="button" class="btn btn-primary" id="confirmarPedido" data-bs-dismiss="modal">
-            Confirmar Pedido
+          <button type="button" class="btn btn-primary" id="continuarPedido" data-bs-dismiss="modal">
+            Continuar Pedido
           </button>
         </div>
       </div>
@@ -43,19 +43,21 @@
 
 <!-- Navbar -->
 <nav class="navbar fixed-top shadow-sm navbar-expand-md navbar-light bg-light p-0">
-  
   <div class="container px-5">
       <img src="/CanavaroApp/src/img/logocanavaro.png" height="85" alt="Logo" loading="lazy"/>
       <button id="buttonPedido"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="border-0 m-0 p-0 bg-light" title="carrito">
+        <span id="contadorCarrito"></span>
         <img src="./img/onlineshoppingcart_85781.svg" alt="carrito" width="40" class="bg-light">
-        <span id="contadorCarrito" class="bg-light p-3"></span>
       </button> 
   </div>
 </nav>
 <div>
   <div class="d-flex gap-3 justify-content-center button-group" id="selectProducto">
-    <button id="pizzas" class="btn-pizzas">Pizzas</button>
-    <button id="empanadas"class="btn-empanadas">Empanadas</button>
+    <div class="container-button">
+      <button id="pizzas" class="active" >Pizzas</button>
+      <button id="empanadas" class="inactive">Empanadas</button>
+    </div>
+    
   </div>
 </div>
 <div class="caja">

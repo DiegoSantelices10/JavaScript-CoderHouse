@@ -7,7 +7,7 @@ window.location.href = "./login.html"
 }
 // declaracion de variables donde obtenemos nodos del DOM
 const btnPedido = document.getElementById("buttonPedido")
-const btnConfirmar = document.getElementById("confirmarPedido")
+const btnContinuar = document.getElementById("continuarPedido")
 const cardPizza = document.getElementById("cardsPizzas")
 const tableModal = document.querySelector(".tableModal")
 const totalModal = document.querySelector(".totalModal")
@@ -20,18 +20,7 @@ let pedidos = []
 let pedido = {}
 let productos = []
 
-selectProducto.addEventListener('click', (e) => { 
-    e.preventDefault()
-    if(pizzas.id == e.target.id){
-       pizzas.className= "active" 
-       empanadas.className= ""
-    } else if (empanadas.id == e.target.id) {
-        empanadas.className= "active"
-        pizzas.className= ""
-    }
-    
-    obtenerProductos(e.target.id) 
-})
+
 
 
 
@@ -39,32 +28,36 @@ selectProducto.addEventListener('click', (e) => {
 const obtenerProductos = async (dato) => {
     await fetch('../src/datosJSON/datos.json')
     .then(res => res.json())
-    .then(datos => cardProducto(datos[dato]))}
+    .then(datos => cardProducto(datos[!dato? "pizzas" : dato]))
+
+}
 
 
-    const cardProducto = (dato) => {
+  obtenerProductos()  
+
+const cardProducto = (dato) => {
         cardPizza.innerHTML = ""
-        Object.values(dato).map(({id, nombre, imagen, descripcion, precio}) => {
+        Object.values(dato).map(({id, nombre, imagen, descripcion, precio, categoria}) => {
         const contenedor = document.createElement("div");
-        contenedor.className = "grid-item bg-white p-2 rounded"
+        contenedor.className = "grid-item bg-white p-2 rounded shadow-sm"
         contenedor.innerHTML = ` <div class="rounded-3 d-flex justify-content-between cards">
         <img key="${id}" src="${imagen}" class="img-pizza rounded" alt="${nombre}"/>
                                     <div class="w-100" style="padding-left: 10px;">
-                                        <h5 class="m-0 titulo text-uppercase">${nombre}</h5>
+                                        <h5 class="m-0 titulo ">${nombre}</h5>
                                         <h6 class="descripcion">${descripcion}</h6>
                                         <p class="m-0 fw-bold precio" >$<span>${precio}</span></p>
+                                        <h4 style="display: none;">${categoria}</h4>
                                     </div>
                                     <div>
                                         <button name="agregar" id="${id}"  
-                                                class="mx-1 shadow-sm fw-bold text-dark fs-4 rounded px-1 border-0 bg-white" 
+                                                class="shadow-sm fw-bold text-dark fs-4 rounded border border-white bg-white" 
                                                 type="button">+
                                         </button>
                                     </div>
                                 </div>
                                 `;
         cardPizza.appendChild(contenedor);
-        document.getElementById(`${id}`).addEventListener("click", () => { addCarrito(contenedor) })})
-        
+        document.getElementById(`${id}`).addEventListener("click", () => { addCarrito(contenedor) })})   
     }
 
 // Al seleccionar una pizza agregamos los datos en un objeto PRODUCTO
@@ -72,17 +65,17 @@ const addCarrito = items => {
 let producto = {}
         producto.id = items.querySelector('button').id,
         producto.nombre = items.querySelector('h5').textContent,
+        producto.categoria = items.querySelector('h4').textContent,
         producto.precio = parseInt(items.querySelector('span').textContent),
         producto.cantidad = 1
 
-
 let result = productos.find( element => element.id === producto.id)
-
 !result? productos.push(producto) : result.cantidad++
     cantidadCarrito()
 }
 // Actualizamos el valor de la cantidad carrito
 const cantidadCarrito = () => {
+    contadorCarrito.className = "contadorCarrito rounded-circle"
     contadorCarrito.innerText =  Object.values(productos).reduce((acc, { cantidad }) => acc + cantidad, 0)
 }
 
@@ -90,9 +83,9 @@ const cantidadCarrito = () => {
 const pintarModal = () => {
     tableModal.innerHTML = ""
     totalModal.innerHTML = ""
-    Object.values(productos).forEach(({ nombre, cantidad, precio, id }) => {
+    Object.values(productos).forEach(({ nombre, cantidad, precio, id, categoria }) => {
         const contenedor = document.createElement("tr");
-        contenedor.innerHTML = ` <td>${nombre}</td>
+        contenedor.innerHTML = ` <td style="font-weight: 700;">${nombre} <span style="font-size: 12px; color: #858585;font-weight: 400;">${categoria}</span></td>
                                    <td>${cantidad}</td>
                                    <td>
                                         <button accessKey="${id}" class="mx-1 shadow-sm fw-bold text-danger rounded px-1 border-0 bg-white" type="button" >-</button>
@@ -137,9 +130,24 @@ seguirComprando.addEventListener('click', () => cantidadCarrito() )
 //Generamos un Evento donde se ejecuta la funcion btnSumarRestar()
 tableModal.addEventListener("click", (e) => btnSumarRestar(e))
 
+// Obtenemos el valor seleccionado para mostrar la categoria.
+selectProducto.addEventListener('click', (e) => { 
+    if(e.target.id === "empanadas") {
+        empanadas.className = "active"
+        pizzas.className = "inactive"
+    } else if (e.target.id === "pizzas"){
+        empanadas.className = "inactive"
+        pizzas.className = "active"
+    }
+
+
+    e.preventDefault()    
+    obtenerProductos(e.target.id) 
+})
+
 // La logica de este evento es la confirmacion del pedido, donde guardamos el objeto carrito en el array pedidos
 // Para luego almacenar la informacion en el localStorage
-btnConfirmar.addEventListener("click", (e) => {
+btnContinuar.addEventListener("click", (e) => {
     e.preventDefault()
     let precioTotal = Object.values(productos).reduce((acc, { cantidad, precio }) => acc + cantidad * precio, 0)
     pedido.productos = {...productos}
@@ -149,7 +157,7 @@ btnConfirmar.addEventListener("click", (e) => {
     pedido.total = precioTotal
     pedidos.push(pedido)
     localStorage.setItem('pedidos', JSON.stringify(pedidos))
- window.location.href = "./pedido.html"
+    window.location.href = "./pedido.html"
     productos = []
     pedido = {}
 })
